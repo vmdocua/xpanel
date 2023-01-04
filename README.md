@@ -1,4 +1,4 @@
-# xpanel
+# Flex XPanel
 
 ## Tracing facility for Flex/Flash applications
 
