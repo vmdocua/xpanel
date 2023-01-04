@@ -1,0 +1,67 @@
+class Logger extends Object
+{
+	public static var enabled : Boolean = true;
+	public static var level   : Number  = LEVEL_ALL;
+	//
+	public static var LEVEL_DEBUG       = 0x01;
+	public static var LEVEL_INFORMATION = 0x02;
+	public static var LEVEL_WARNING     = 0x04;
+	public static var LEVEL_ERROR       = 0x08;
+	//
+	public static var LEVEL_NONE        = 0xFF;
+	public static var LEVEL_ALL         = 0x00;
+	//
+	private static var s_lc:LocalConnection = null;
+
+	public static function alert(o:Object)
+	{
+		mx.controls.Alert.show(""+o, "alert");
+	}
+
+	public static function debug(o):Void
+	{
+		_send(LEVEL_DEBUG, o);
+	}
+
+	public static function info(o):Void
+	{
+		_send(LEVEL_INFORMATION, o);
+	}
+
+	public static function error(o):Void
+	{
+		_send(LEVEL_ERROR, o);
+	}
+
+	public static function message(o):Void
+	{
+		_send(LEVEL_INFORMATION, o);
+	}
+
+	public static function warn(o):Void
+	{
+		_send(LEVEL_WARNING, o);
+	}
+
+	public static function warning(o):Void
+	{
+		_send(LEVEL_WARNING, o);
+	}
+
+	public static function trace(o):Void
+	{
+		_send(LEVEL_DEBUG, o);
+	}
+
+	//
+	private static function _send(_level_:Number, o):Void
+	{
+		if( _level_<level )
+			return;
+
+		if( s_lc==null )
+			s_lc = new LocalConnection();
+
+		s_lc.send("_xpanel1", "dispatchMessage", getTimer(), ""+o, _level_);
+	}
+}
